@@ -1,7 +1,6 @@
 import {uiConfig, auth} from '../firebaseProvider'
 import {StyledFirebaseAuth} from "react-firebaseui";
-import {useContext, useEffect} from "react";
-import AuthContext from "./AuthProvider";
+
 
 
 export default function Login() {
