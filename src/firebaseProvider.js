@@ -11,5 +11,15 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 export const auth = firebase.auth()
+export const uiConfig = {
+    signInFlow: 'popup',
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+        signInSuccessWithAuthResult: () => false,
+    },
+}
 const firestore = firebase.firestore()

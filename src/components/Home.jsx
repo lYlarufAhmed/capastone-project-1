@@ -1,5 +1,15 @@
 export default function Home() {
+    const handleSubmit = () => {
+    }
     return (
-        <h1>My Students</h1>
+        <div className={'Wrapper'}>
+
+            <h1>My Students</h1>
+
+            <textarea>
+
+        </textarea>
+            <button onClick={handleSubmit}>Submit</button>
+        </div>
     )
 }

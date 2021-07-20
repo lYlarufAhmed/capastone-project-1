@@ -1,5 +1,23 @@
+import {uiConfig, auth} from '../firebaseProvider'
+import {StyledFirebaseAuth} from "react-firebaseui";
+import {useContext, useEffect} from "react";
+import AuthContext from "./AuthProvider";
+
+
 export default function Login() {
+    // let {setCurrentUser} = useContext(AuthContext)
+    // useEffect(() => {
+    //     const unregister = auth.onAuthStateChanged(user => {
+    //         console.log(user)
+    //         if (user)
+    //             setCurrentUser(user)
+    //     })
+    //     return unregister()
+    // }, [setCurrentUser])
     return (
-        <h1>Everyone Answer</h1>
+        <div>
+            <h1>Everyone Answer</h1>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth}/>
+        </div>
     )
 }
