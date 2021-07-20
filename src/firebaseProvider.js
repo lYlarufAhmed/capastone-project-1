@@ -23,3 +23,5 @@ export const uiConfig = {
     },
 }
 const firestore = firebase.firestore()
+export const sessionRef = firestore.collection('sessions')
+
