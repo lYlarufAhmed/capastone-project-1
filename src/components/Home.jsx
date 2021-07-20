@@ -1,41 +1,23 @@
 import React from "react";
 import {sessionRef} from '../firebaseProvider'
 import AuthContext from "./AuthProvider";
+import {Button, Grid, TextField, Typography} from "@material-ui/core";
+import Dashboard from "./Dashboard";
 
 export default function Home() {
     let [submitting, setSubmitting] = React.useState(false)
-    let [answers, setAnswers] = React.useState([])
-    let inputRef = React.useRef()
-    let {currentUser} = React.useContext(AuthContext)
-    let url = 'http://localhost:3000/' + currentUser.uid
-    React.useEffect(() => {
-        const query = sessionRef.where('teacher_uid', '==', currentUser.uid)
-        const getStudents = async () => {
-            try {
-                await query.onSnapshot(snapshot => {
-                    let students = []
-                    snapshot.forEach(doc => {
-                        students.push(doc.data())
-                    })
-                    setAnswers(students)
-                })
-            } catch (e) {
-                alert(e.message)
-            }
+    let [textAreaInput, setTexAreaInput] = React.useState()
 
-        }
-        getStudents()
-    }, [currentUser.uid])
+    let {currentUser, answers} = React.useContext(AuthContext)
     const handleSubmit = async () => {
-        let val = inputRef.current.value
-        console.log(val)
+        console.log(textAreaInput)
         let student_names = []
-        if (val) {
+        if (textAreaInput) {
             setSubmitting(true)
-            if (val.includes(','))
-                student_names = val.split(',')
+            if (textAreaInput.includes(','))
+                student_names = textAreaInput.split(',')
             else
-                student_names = val.split('\n')
+                student_names = textAreaInput.split('\n')
             for (let studentName of student_names) {
                 let doc = {
                     "student_name": studentName,
@@ -48,33 +30,37 @@ export default function Home() {
                     alert(e.message)
                 }
             }
-
             setSubmitting(false)
         }
     }
+    if (answers.length) {
+        return <Dashboard/>
+    }
     return (
-        <div className={'Wrapper'}>
-            {answers.length ? (
-                <>
-                    <h1>Dashboard</h1>
-                    <a href={url}>{url}</a>
-                    {answers.sort(ans => ans.student_name).map(ans => (<div className={'AnswerWrapper'}>
-                            <div className={'InputControl'}>
-                                <label htmlFor={ans.id}>
-                                    {ans.student_name}
-                                    <textarea id={ans.id} value={ans.content}/>
-                                </label>
-                            </div>
-                        </div>
-                    ))}
-                </>) : (<>
-                <h1>My Students</h1>
 
-                <textarea ref={inputRef}>
+        <Grid container direction={'column'} spacing={4}>
+            <h1>My Students</h1>
 
-                </textarea>
-                <button onClick={handleSubmit}>Submit</button>
-                {submitting && 'Submitting.......'}</>)}
-        </div>
+            <Typography variant={'body2'} gutterBottom>
+                Enter the comma new line seperated Names:
+            </Typography>
+            <div>
+
+                <TextField
+                    multiline
+                    rows={7}
+                    onInput={event => setTexAreaInput(event.target.value)}
+                    variant="outlined"
+                />
+                <br/>
+                <br/>
+
+                <Button variant="contained" size={'small'} onClick={handleSubmit} color="secondary">
+                    Submit
+                </Button>
+                {submitting && 'Submitting.......'}
+            </div>
+        </Grid>
+
     )
 }

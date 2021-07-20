@@ -7,6 +7,7 @@ export default function TopNav() {
     const sigOutHandler = async () => {
         await auth.signOut()
         setCurrentUser({})
+        localStorage.setItem('firebaseAuthToken', null)
     }
     if (currentUser)
         return (
