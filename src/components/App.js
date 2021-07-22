@@ -4,7 +4,7 @@ import Login from "./Login";
 import Home from "./Home";
 import AuthContext from "./AuthProvider";
 import TopNav from "./TopNav";
-import {LinearProgress, Typography} from "@material-ui/core";
+import {Container, LinearProgress, Typography} from "@material-ui/core";
 
 function App() {
     let [answers, setAnswers] = React.useState([])
@@ -12,7 +12,7 @@ function App() {
     let [loading, setLoading] = React.useState(true)
     let [error, setError] = React.useState(null)
     useEffect(() => {
-        if (!localStorage.getItem('firebaseAuthToken')) setLoading(false)
+        if (!!localStorage.getItem('firebaseAuthToken')) setLoading(false)
         const unregister = auth.onAuthStateChanged(async user => {
             console.log(user)
             if (user) {
@@ -57,7 +57,7 @@ function App() {
         <AuthContext.Provider value={{currentUser, setCurrentUser, answers, deleteAnswers}}>
             {loading ? (<> <Typography variant={'h4'} gutterBottom>Loading....</Typography>
                 <LinearProgress/>
-            </>) : (<div className="App">
+            </>) : (<Container maxWidth={'xl'}>
                 {
                     error ? <Typography variant={'h6'}>Error: {error}</Typography> : (<>
                         <TopNav/>
@@ -65,7 +65,7 @@ function App() {
                     </>)
                 }
 
-            </div>)}
+            </Container>)}
 
         </AuthContext.Provider>
     );

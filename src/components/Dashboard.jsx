@@ -21,24 +21,29 @@ export default function Dashboard() {
                 <Grid item xs={5}>
                     <h1>Dashboard</h1>
                     <Link href={url}>{url}</Link>
-                </Grid><Grid item>
-                {ending && 'Ending session....'}
-                <Button variant={'contained'} onClick={handleClick}>End Session</Button>
-            </Grid>
+                </Grid>
+                <Grid item>
+                    {ending && 'Ending session....'}
+                    <Button variant={'contained'} onClick={handleClick} style={{marginLeft: '1rem'}}>End Session</Button>
+                </Grid>
             </Grid>
 
 
-            <Grid container direction={'row'}
-                  spacing={2}>{answers.sort(ans => ans.student_name).map(ans => (
-                <TextField
-                    key={ans.id}
-                    id={ans.id}
-                    label={ans.student_name}
-                    multiline
-                    rows={4}
-                    value={ans.content}
-                    variant="outlined"
-                />
+            <Grid container style={{flexGrow: 1}} spacing={3}>{answers.sort(ans => ans.student_name).map(ans => (
+                <Grid item xs={3}>
+                    <TextField
+                        key={ans.id}
+                        id={ans.id}
+                        label={ans.student_name}
+                        multiline
+                        rows={4}
+                        value={ans.content}
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Grid>
             ))}</Grid>
 
         </Grid>

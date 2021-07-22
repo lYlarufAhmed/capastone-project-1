@@ -12,7 +12,7 @@ export default function TopNav() {
     if (currentUser)
         return (
 
-            <nav>
+            <nav style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <button id="logout" onClick={sigOutHandler}><img src={currentUser.photoURL}
                                                                  alt={currentUser.displayName}/></button>
             </nav>

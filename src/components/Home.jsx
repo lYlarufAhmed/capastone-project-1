@@ -40,28 +40,29 @@ export default function Home() {
     }
     return (
 
-        <Grid container direction={'column'} spacing={4}>
+        <Grid container direction={'column'} style={{padding: '0 15rem'}}>
             <h1>My Students</h1>
 
             <Typography variant={'body2'} gutterBottom>
                 Enter the comma new line seperated Names:
             </Typography>
-            <div>
+            <Grid item direction={'column'}>
 
                 <TextField
                     multiline
                     rows={7}
                     onInput={event => setTexAreaInput(event.target.value)}
                     variant="outlined"
+                    fullWidth
                 />
                 <br/>
                 <br/>
-
-                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="secondary">
+                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="primary">
                     Submit
                 </Button>
                 {submitting && 'Submitting.......'}
-            </div>
+            </Grid>
+
         </Grid>
 
     )
