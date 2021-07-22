@@ -19,15 +19,16 @@ export default function Home() {
             else
                 student_names = textAreaInput.split('\n')
             for (let studentName of student_names) {
-                let doc = {
-                    "student_name": studentName,
-                    teacher_uid: currentUser.uid
-                }
-                try {
-
-                    await sessionRef.add(doc)
-                } catch (e) {
-                    alert(e.message)
+                if (studentName) {
+                    let doc = {
+                        "student_name": studentName,
+                        teacher_uid: currentUser.uid
+                    }
+                    try {
+                        await sessionRef.add(doc)
+                    } catch (e) {
+                        alert(e.message)
+                    }
                 }
             }
             setSubmitting(false)

@@ -4,11 +4,13 @@ import Login from "./Login";
 import Home from "./Home";
 import AuthContext from "./AuthProvider";
 import TopNav from "./TopNav";
+import {LinearProgress, Typography} from "@material-ui/core";
 
 function App() {
     let [answers, setAnswers] = React.useState([])
     let [currentUser, setCurrentUser] = React.useState({})
     let [loading, setLoading] = React.useState(true)
+    let [error, setError] = React.useState(null)
     useEffect(() => {
         if (!localStorage.getItem('firebaseAuthToken')) setLoading(false)
         const unregister = auth.onAuthStateChanged(async user => {
@@ -16,6 +18,7 @@ function App() {
             if (user) {
                 setCurrentUser(user)
                 localStorage.setItem('firebaseAuthToken', user.refreshToken)
+                setError(null)
             }
         })
         return () => unregister()
@@ -35,8 +38,9 @@ function App() {
                         })
                         setAnswers(students)
                     })
+                    setError(null)
                 } catch (e) {
-                    alert(e.message)
+                    setError(e.message)
                 }
 
             }
@@ -44,11 +48,23 @@ function App() {
 
         }
     }, [currentUser.uid])
+    const deleteAnswers = async () => {
+        answers.forEach(async (ans) => {
+            await sessionRef.doc(ans.id).delete()
+        })
+    }
     return (
-        <AuthContext.Provider value={{currentUser, setCurrentUser, answers, loading, setLoading}}>
-            {loading ? 'Loading.....' : (<div className="App">
-                <TopNav/>
-                {currentUser.displayName ? <Home/> : <Login/>}
+        <AuthContext.Provider value={{currentUser, setCurrentUser, answers, deleteAnswers}}>
+            {loading ? (<> <Typography variant={'h4'} gutterBottom>Loading....</Typography>
+                <LinearProgress/>
+            </>) : (<div className="App">
+                {
+                    error ? <Typography variant={'h6'}>Error: {error}</Typography> : (<>
+                        <TopNav/>
+                        {currentUser.displayName ? <Home/> : <Login/>}
+                    </>)
+                }
+
             </div>)}
 
         </AuthContext.Provider>
