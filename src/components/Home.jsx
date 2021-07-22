@@ -3,6 +3,7 @@ import {sessionRef} from '../firebaseProvider'
 import AuthContext from "./AuthProvider";
 import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import Dashboard from "./Dashboard";
+import {logDOM} from "@testing-library/react";
 
 export default function Home() {
     let [submitting, setSubmitting] = React.useState(false)
@@ -35,7 +36,8 @@ export default function Home() {
         }
     }
     if (answers.length) {
-        return <Dashboard/>
+        if (!submitting)
+            return <Dashboard/>
     }
     return (
 
@@ -56,7 +58,7 @@ export default function Home() {
                 <br/>
                 <br/>
 
-                <Button variant="contained" size={'small'} onClick={handleSubmit} color="secondary">
+                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="secondary">
                     Submit
                 </Button>
                 {submitting && 'Submitting.......'}

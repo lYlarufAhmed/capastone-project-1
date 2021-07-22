@@ -11,7 +11,6 @@ export default function Dashboard() {
         if (confirmation) {
             setEnding(true)
             deleteAnswers()
-            setEnding(false)
         }
 
     }
