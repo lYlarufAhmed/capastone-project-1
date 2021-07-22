@@ -3,7 +3,6 @@ import {sessionRef} from '../firebaseProvider'
 import AuthContext from "./AuthProvider";
 import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import Dashboard from "./Dashboard";
-import {logDOM} from "@testing-library/react";
 
 export default function Home() {
     let [submitting, setSubmitting] = React.useState(false)
