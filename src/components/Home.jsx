@@ -57,7 +57,8 @@ export default function Home() {
                 />
                 <br/>
                 <br/>
-                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="primary">
+                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="primary"
+                style={{marginRight: '1rem'}}>
                     Submit
                 </Button>
                 {submitting && 'Submitting.......'}
