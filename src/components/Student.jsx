@@ -5,7 +5,7 @@ import {
     Container,
     FormControl,
     Grid,
-    InputLabel, LinearProgress,
+    LinearProgress,
     makeStyles,
     MenuItem,
     Select,
