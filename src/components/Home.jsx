@@ -1,69 +1,28 @@
+import {useDispatch, useSelector} from "react-redux";
 import React from "react";
-import {sessionRef} from '../firebaseProvider'
-import AuthContext from "./AuthProvider";
-import {Button, Grid, TextField, Typography} from "@material-ui/core";
-import Dashboard from "./Dashboard";
+import {auth} from "../firebaseProvider";
+import {setCurrentUser} from "../redux/actions";
+import {Grid} from "@material-ui/core";
+import Loading from "./Loading";
+import Login from "./Login";
+import Teacher from "./Teacher";
+
 
 export default function Home() {
-    let [submitting, setSubmitting] = React.useState(false)
-    let [textAreaInput, setTexAreaInput] = React.useState()
-
-    let {currentUser, answers} = React.useContext(AuthContext)
-    const handleSubmit = async () => {
-        console.log(textAreaInput)
-        let student_names = []
-        if (textAreaInput) {
-            setSubmitting(true)
-            if (textAreaInput.includes(','))
-                student_names = textAreaInput.split(',')
-            else
-                student_names = textAreaInput.split('\n')
-            for (let studentName of student_names) {
-                if (studentName) {
-                    let doc = {
-                        "student_name": studentName,
-                        teacher_uid: currentUser.uid
-                    }
-                    try {
-                        await sessionRef.add(doc)
-                    } catch (e) {
-                        alert(e.message)
-                    }
-                }
+    const dispatch = useDispatch()
+    React.useEffect(() => {
+        const unregister = auth.onAuthStateChanged(async user => {
+            if (user) {
+                dispatch(setCurrentUser(user))
             }
-            setSubmitting(false)
-        }
-    }
-    if (answers.length) {
-        if (!submitting)
-            return <Dashboard/>
-    }
+        })
+        return () => unregister()
+    }, [dispatch])
+    const loading = useSelector(state => state.app.loading)
+    const currentUser = useSelector(state => state.app.currentUser)
     return (
-
-        <Grid container direction={'column'} style={{padding: '0 15rem'}}>
-            <h1>My Students</h1>
-
-            <Typography variant={'body2'} gutterBottom>
-                Enter the comma new line seperated Names:
-            </Typography>
-            <Grid item direction={'column'}>
-
-                <TextField
-                    multiline
-                    rows={7}
-                    onInput={event => setTexAreaInput(event.target.value)}
-                    variant="outlined"
-                    fullWidth
-                />
-                <br/>
-                <br/>
-                <Button variant="contained" size={'small'} onClick={() => handleSubmit()} color="primary"
-                style={{marginRight: '1rem'}}>
-                    Submit
-                </Button>
-                {submitting && 'Submitting.......'}
-            </Grid>
-
+        <Grid container direction={'column'}>
+            {loading ? <Loading/> : !!currentUser ? <Teacher/> : <Login/>}
         </Grid>
 
     )

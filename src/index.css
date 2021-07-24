@@ -14,7 +14,7 @@ code {
 
 #logout img {
     height: auto;
-    width: 4rem;
+    width: 3rem;
     border-radius: 50%;
 }
 
@@ -36,5 +36,6 @@ button:hover {
 
 nav {
     align-self: flex-end;
+    padding: 1rem 0;
 }
 

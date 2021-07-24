@@ -1,13 +1,14 @@
 import React from "react";
-import AuthContext from "./AuthProvider";
 import {auth} from '../firebaseProvider'
+import {useDispatch, useSelector} from "react-redux";
+import {setCurrentUser} from "../redux/actions";
 
 export default function TopNav() {
-    const {currentUser, setCurrentUser} = React.useContext(AuthContext)
+    const currentUser = useSelector(state => state.app.currentUser)
+    const dispatch = useDispatch()
     const sigOutHandler = async () => {
         await auth.signOut()
-        setCurrentUser({})
-        localStorage.setItem('firebaseAuthToken', null)
+        dispatch(setCurrentUser(null))
     }
     if (currentUser)
         return (

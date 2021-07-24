@@ -22,6 +22,6 @@ export const uiConfig = {
         signInSuccessWithAuthResult: () => false,
     },
 }
-const firestore = firebase.firestore()
+export const firestore = firebase.firestore()
 export const sessionRef = firestore.collection('sessions')
 
