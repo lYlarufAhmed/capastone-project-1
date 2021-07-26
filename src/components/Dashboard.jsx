@@ -15,7 +15,7 @@ export default function Dashboard() {
     let dispatch = useDispatch()
     let students = useSelector(state => state.students.students)
     let dynamicStatus = useSelector(state => state.app.dynamicStatus)
-    let url = document.URL + currentUser.uid
+    let url = document.URL + 's/' + currentUser.uid
     const handleClick = (ev) => {
         const confirmation = window.confirm("Do you want to End the session?")
         if (confirmation) {
