@@ -1,4 +1,4 @@
-import {Button, Container, Grid, Link, TextField, Typography} from "@material-ui/core";
+import {Button, Grid, Link, TextField, Typography} from "@material-ui/core";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -15,44 +15,34 @@ export default function Dashboard() {
     let dispatch = useDispatch()
     let students = useSelector(state => state.students.students)
     let dynamicStatus = useSelector(state => state.app.dynamicStatus)
-    // let [resetting, setResetting] = React.useState(false)
     let url = 'http://localhost:3000/s/' + currentUser.uid
     const handleClick = (ev) => {
         const confirmation = window.confirm("Do you want to End the session?")
         if (confirmation) {
             dispatch(setDynamicStatus('ending'))
             dispatch(deleteStudents(currentUser.uid))
-            // setEnding(true)
-            // deleteAnswers()
         }
 
     }
 
-    const handleReset = () => {
-        // setResetting(true)
-        dispatch(resetAnswers(currentUser.uid))
-        // setResetting(false)
-    }
+    const handleReset = () => dispatch(resetAnswers(currentUser.uid))
+
 
     React.useEffect(() => {
         const getUpdate = async () => {
-            console.log('called get update')
             try {
                 const query = sessionRef.where('teacher_uid', '==', currentUser.uid)
                 await query.onSnapshot(snapshot => {
                     let results = []
-                    console.log('snap shot found')
                     snapshot.forEach(doc => {
                         let data = doc.data()
                         data.id = doc.id
                         results.push(data)
                     })
                     if (results.length) {
-                        console.log(results)
                         dispatch(setStudents(results))
                     }
                 })
-
             } catch (e) {
                 dispatch(setError(e.message))
             }
@@ -62,29 +52,32 @@ export default function Dashboard() {
     }, [currentUser.uid, dispatch])
 
     return (
-        <Grid container direction={'column'} style={{gap: '1.9rem'}}>
-            <Grid container justifyContent={'space-between'} spacing={2}>
-                <Grid item xs={6}>
-                    <Container style={{display: 'flex', height: '3rem', alignItems: 'center', gap: '1rem'}}>
-                        <h1>Dashboard</h1>
-                        <Grid item>
-                            <Button variant={'contained'} color={'primary'} size={'small'} onClick={handleReset}>Clear
-                                Answer</Button>
-                            {dynamicStatus === 'resetting' &&
-                            <Typography variant={'body2'}>Clearing the answer....</Typography>}
-                        </Grid>
-                    </Container>
-                    <Link href={url} target={'_blank'}>{url}</Link>
+        <Grid container direction={'column'} style={{gap: '.5rem'}}>
+            <Grid container justifyContent={'space-between'}>
+                <Grid container alignItems={'center'} justifyContent={'space-between'}
+                      xs={6}>
+                    <Typography variant={'h4'}>Dashboard</Typography>
+                    <Grid container justifyContent={'space-between'} xs={7}>
+                        <Button variant={'contained'} color={'primary'} size={'small'} onClick={handleReset}>Clear
+                            Answer</Button>
+                        {dynamicStatus === 'resetting' &&
+                        <Typography variant={'body2'}>Clearing the answer....</Typography>}
+                    </Grid>
+
                 </Grid>
-                <Grid item>
+
+                <Grid xs={3} container alignItems={'center'}
+                      justifyContent={dynamicStatus === 'ending' ? 'space-between' : 'flex-end'}>
                     {dynamicStatus === 'ending' && 'Ending session....'}
-                    <Button variant={'contained'} onClick={handleClick} style={{marginLeft: '1rem'}}>End
+                    <Button variant={'contained'} size={'small'} onClick={handleClick}>End
                         Session</Button>
                 </Grid>
             </Grid>
-
-
-            <Grid container style={{flexGrow: 1}} spacing={3}>{students.sort(ans => ans.student_name).map(ans => (
+            <Grid container alignItems={'center'}>
+                <Typography variant={'body1'}>Student Link:</Typography> <Link href={url} target={'_blank'}>{url}</Link>
+            </Grid>
+            <Grid container style={{flexGrow: 1}}
+                  spacing={3}>{students.sort((a, b) => a.student_name.localeCompare(b.student_name) ).map(ans => (
                 <Grid key={ans.id} item xs={3}>
                     <TextField
                         id={ans.id}
@@ -96,10 +89,37 @@ export default function Dashboard() {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        contentEditable={0<5}
                     />
                 </Grid>
             ))}</Grid>
-
         </Grid>
     )
 }
+
+
+// <Grid container justifyContent={'space-between'} spacing={2}>
+//     <Grid item xs={6}>
+//         <Container style={{display: 'flex', height: '3rem', alignItems: 'left', gap: '1rem'}}>
+//             <Grid item direction={'column'}>
+//                 <Typography variant={'h4'}>Dashboard</Typography>
+//                 <Grid item>
+//                     <Button variant={'contained'} color={'primary'} size={'small'} onClick={handleReset}>Clear
+//                         Answer</Button>
+//                     {dynamicStatus === 'resetting' &&
+//                     <Typography variant={'body2'}>Clearing the answer....</Typography>}
+//                 </Grid>
+//             </Grid>
+//         </Container>
+//         <Link href={url} target={'_blank'}>{url}</Link>
+//     </Grid>
+//     <Grid item>
+//         {dynamicStatus === 'ending' && 'Ending session....'}
+//         <Button variant={'contained'} onClick={handleClick} style={{marginLeft: '1rem'}}>End
+//             Session</Button>
+//     </Grid>
+//
+// </Grid>
+//
+//
+

@@ -9,14 +9,14 @@ export default function AddStudent() {
 
     let [textAreaInput, setTextAreaInput] = React.useState()
     return (
-        <Container maxWidth={'xl'}>
+        <Container maxWidth={'sm'} style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
 
-            <h1>My Students</h1>
+            <Typography variant={'h3'}>My Students</Typography>
 
             <Typography variant={'body2'} gutterBottom>
-                Enter the comma new line seperated Names:
+                Enter the names of each person who will answer your questions, separated by comma or new line
             </Typography>
-            <Grid item>
+            {/*<Grid item>*/}
 
                 <TextField
                     multiline
@@ -24,9 +24,10 @@ export default function AddStudent() {
                     onInput={event => setTextAreaInput(event.target.value)}
                     variant="outlined"
                     fullWidth
+                    placeholder={'eg. David, Kim, Rajesh'}
                 />
-                <br/>
-                <br/>
+            {/*</Grid>*/}
+            <Grid item>
                 <Button variant="contained" size={'small'} onClick={() => dispatch(createStudents(textAreaInput))}
                         color="primary"
                         style={{marginRight: '1rem'}}>
