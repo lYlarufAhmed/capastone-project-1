@@ -15,7 +15,7 @@ export default function Dashboard() {
     let dispatch = useDispatch()
     let students = useSelector(state => state.students.students)
     let dynamicStatus = useSelector(state => state.app.dynamicStatus)
-    let url = 'http://localhost:3000/s/' + currentUser.uid
+    let url = document.URL + currentUser.uid
     const handleClick = (ev) => {
         const confirmation = window.confirm("Do you want to End the session?")
         if (confirmation) {
@@ -51,8 +51,10 @@ export default function Dashboard() {
         getUpdate()
     }, [currentUser.uid, dispatch])
 
+
     return (
         <Grid container direction={'column'} style={{gap: '.5rem'}}>
+
             <Grid container justifyContent={'space-between'}>
                 <Grid container alignItems={'center'} justifyContent={'space-between'}
                       xs={6}>
@@ -77,7 +79,7 @@ export default function Dashboard() {
                 <Typography variant={'body1'}>Student Link:</Typography> <Link href={url} target={'_blank'}>{url}</Link>
             </Grid>
             <Grid container style={{flexGrow: 1}}
-                  spacing={3}>{students.sort((a, b) => a.student_name.localeCompare(b.student_name) ).map(ans => (
+                  spacing={3}>{students.sort((a, b) => a.student_name.localeCompare(b.student_name)).map(ans => (
                 <Grid key={ans.id} item xs={3}>
                     <TextField
                         id={ans.id}
@@ -89,7 +91,7 @@ export default function Dashboard() {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        contentEditable={0<5}
+                        contentEditable
                     />
                 </Grid>
             ))}</Grid>
