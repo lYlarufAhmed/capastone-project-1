@@ -12,16 +12,16 @@ function Alert(props) {
 export default function AddStudent() {
     const dynamicStatus = useSelector(state => state.app.dynamicStatus)
     const dispatch = useDispatch()
-    let [open, setOpen] = React.useState(false)
+    let [warning, setWaring] = React.useState('')
 
-    const handleClose = () => setOpen(false)
-    let [textAreaInput, setTextAreaInput] = React.useState()
+    const handleClose = () => setWaring('')
+    let [textAreaInput, setTextAreaInput] = React.useState('')
     return (
         <Container maxWidth={'sm'} style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
 
-            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Snackbar open={!!warning} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="warning">
-                    Empty!
+                    {warning}
                 </Alert>
             </Snackbar>
             <Typography variant={'h3'}>My Students</Typography>
@@ -42,11 +42,17 @@ export default function AddStudent() {
             {/*</Grid>*/}
             <Grid item>
                 <Button variant="contained" size={'small'} onClick={() => {
-                    if (textAreaInput){
-
-                        dispatch(createStudents(textAreaInput))
-                    }else{
-                        setOpen(true)
+                    if (textAreaInput) {
+                        let student_names
+                        if (textAreaInput.includes(','))
+                            student_names = textAreaInput.split(',')
+                        else
+                            student_names = textAreaInput.split('\n')
+                        if (student_names.length !== new Set(student_names).size) setWaring('Duplicate name!')
+                        else
+                            dispatch(createStudents(textAreaInput))
+                    } else {
+                        setWaring('Empty!')
                     }
                 }}
                         color="primary"

@@ -35,8 +35,8 @@ export default function Student(props) {
 
     React.useEffect(() => {
         const getStudents = async () => {
-            const query = sessionRef.where('teacher_uid', '==', teacherUID)
             try {
+                const query = sessionRef.where('teacher_uid', '==', teacherUID)
                 await query.onSnapshot(snapshot => {
                     let students = []
                     snapshot.forEach(doc => {
