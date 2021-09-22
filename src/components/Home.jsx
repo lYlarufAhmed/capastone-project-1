@@ -17,6 +17,7 @@ export default function Home() {
             }
         })
         return () => unregister()
+        // eslint-disable-next-line
     }, [])
     const loading = useSelector(state => state.app.loading)
     const currentUser = useSelector(state => state.app.currentUser)
