@@ -17,7 +17,7 @@ export default function Home() {
             }
         })
         return () => unregister()
-    }, [dispatch])
+    }, [])
     const loading = useSelector(state => state.app.loading)
     const currentUser = useSelector(state => state.app.currentUser)
     return (
