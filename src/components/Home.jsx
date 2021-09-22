@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import {auth} from "../firebaseProvider";
-import {setCurrentUser} from "../redux/actions";
+import {setCurrentUser, setAppLoading} from "../redux/actions";
 import {Grid} from "@material-ui/core";
 import Loading from "./Loading";
 import Login from "./Login";
@@ -14,6 +14,8 @@ export default function Home() {
         const unregister = auth.onAuthStateChanged(async user => {
             if (user) {
                 dispatch(setCurrentUser(user))
+            }else{
+                setAppLoading(false)
             }
         })
         return () => unregister()
