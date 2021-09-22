@@ -15,7 +15,7 @@ export default function Home() {
             if (user) {
                 dispatch(setCurrentUser(user))
             }else{
-                setAppLoading(false)
+                dispatch(setAppLoading(false))
             }
         })
         return () => unregister()
